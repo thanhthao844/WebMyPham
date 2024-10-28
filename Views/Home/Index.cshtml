@@ -1,0 +1,97 @@
+﻿﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<ProductModel>
+<head>
+    <style>
+        .custom-line
+        {
+            border: none;
+            border-top: 1px solid #DDDDDD; /* Độ dày và màu của dòng */
+            width: max-width;              /* Chiều dài của dòng */
+            margin: 20px auto;          /* Căn giữa và khoảng cách trên/dưới */
+        }
+        .brush_text{
+            text-align:center;
+            font-weight: bold;
+            margin-top: 20px;
+        
+        }
+    </style>
+    <link rel="stylesheet" href="~/font"/>
+</head>
+<!-- product section start -->
+<div class="product_section layout_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="product_taital">Our Products</h1>
+                <p class="product_text">incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+            </div>
+        </div>
+        <div class="product_section_2 layout_padding">
+            <div class="row">
+                @foreach(var item in Model){
+                <div class="col-lg-3 col-sm-6">
+                    <div class="product_box" style="border: 1px solid white">
+                      
+                       @* <p class="lorem_text">@item.Description</p>*@ <!--Tên tiếng anh-->
+                            <img src="~/images/@item.Image" alt="@item.Name" width="100%">
+                            <h4 class="brush_text" >@item.Name</h4>
+                            <hr class="custom-line">
+
+                            <div class="btn_main" style="background-color:white">
+                                <!-- Tùy chọn dung tích -->
+                            <div class="buy_bt" style="background-color:white">
+                              @*  <ul>
+                                    <li class="active"><a href="#">Buy Now</a></li>
+                                    <li><a href="#">Buy Now</a></li>
+                                </ul>*@
+                                    <div class="form-group d-flex justify-content-center align-items-center">
+                                        <label for="dropdownMenu-@item.Id" class="font-12 me-2">Chọn dung tích:</label>
+                                        <select class="form-control w-50 dropdownMenu" id="dropdownMenu-@item.Id" data-product-id="@item.Id">
+                                            @foreach (var variant in item.ProductVariant)
+                                            {
+                                                <option value="@variant.ProductVariantId" data-price="@variant.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))">
+                                                    @variant.Size
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <!-- Hiển thị giá theo dung tích được chọn -->
+                                    <div class="font-18 text-center fw-500 pt-2 pb-2">
+                                        <span class="priceDisplay" id="priceDisplay-@item.Id">
+                                            @item.ProductVariant.FirstOrDefault()?.Price.ToString("C", new System.Globalization.CultureInfo("vi-VN"))
+                                        </span>
+                                    </div>
+                                    <button class="btn btn-outline-dark add-to-cart " style="display:block;margin-right:auto;margin-left:auto;padding: 0;
+    background: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    height: 44px;
+    width: 100%;
+    border: 1px solid #e1ded9;"
+                                        type="button"
+                                        data-product-id="@item.Id"
+                                        data-variant-id="@item.ProductVariant.FirstOrDefault()?.ProductVariantId"
+                                        onclick="addToCart(this)">
+                                        THÊM VÀO GIỎ HÀNG
+                                    </button>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+            
+                }             
+            </div>
+            <div class="seemore_bt"><a href="#">See More</a></div>
+        </div>
+    </div>
+</div>
+<!-- product section end -->
